@@ -220,8 +220,6 @@ void OpenGLRenderer::BeginScene() {
 }
 
 void OpenGLRenderer::EndScene() {
-	
-	glFlush();
 }
 
 static EERIEMATRIX projection;

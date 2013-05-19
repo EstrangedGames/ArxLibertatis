@@ -93,6 +93,7 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "graphics/particle/ParticleManager.h"
 #include "graphics/particle/MagicFlare.h"
 #include "graphics/texture/TextureStage.h"
+#include "graphics/opengl/GLRenderTexture.h"
 
 #include "gui/Interface.h"
 #include "gui/Menu.h"
@@ -1689,6 +1690,8 @@ void ArxGame::update() {
 	}
 }
 
+GLBatch * postProcessing;
+
 void ArxGame::render() {
 	
 	ACTIVECAM = &subj;
@@ -1765,6 +1768,14 @@ void ArxGame::render() {
 	// Updates Externalview
 	EXTERNALVIEW = false;
 
+
+	if(!postProcessing)
+		postProcessing = new GLBatch();
+
+	postProcessing->m_texture.setSize(Vec2s(g_size.width(), g_size.height()));
+
+	postProcessing->m_texture.attach();
+
 	if(isInMenu()) {
 		renderMenu();
 	} else if(isInCinematic()) {
@@ -1803,7 +1814,10 @@ void ArxGame::render() {
 		}
 		GRenderer->EndScene();
 	}
+
+	postProcessing->render(g_size);
 	
+
 	if(LaunchDemo) {
 		LaunchDemo = 0;
 		LaunchDummyParticle();

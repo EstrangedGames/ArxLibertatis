@@ -139,7 +139,6 @@ private:
 	TextureList textures;
 
 	bool initialized;
-	
 };
 
 template <class Vertex>
